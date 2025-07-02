@@ -1,7 +1,7 @@
 {
-  "name": "snake-game",
+  "name": "flappy-bird-game",
   "version": "1.0.0",
-  "description": "A classic Snake game built with Next.js and React",
+  "description": "A classic Flappy Bird game built with Next.js and React",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,14 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "keywords": ["snake", "game", "react", "nextjs", "javascript", "browser-game"],
+  "keywords": [
+    "flappy-bird",
+    "game",
+    "react",
+    "nextjs",
+    "javascript",
+    "browser-game"
+  ],
   "dependencies": {
     "next": "latest",
     "react": "18.2.0",

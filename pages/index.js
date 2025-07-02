@@ -1,9 +1,12 @@
-import SnakeGame from './SnakeGame';
+import FlappyBird from './FlappyBird';
 
-export default function Home() {
-  return (
-    <div>
-      <SnakeGame />
-    </div>
-  );
-}
+const Home = () => {
+    return (
+        <div>
+            <h1 style={{ textAlign: 'center', color: 'white' }}>Flappy Bird Game</h1>
+            <FlappyBird />
+        </div>
+    );
+};
+
+export default Home;
