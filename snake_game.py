@@ -1,6 +1,7 @@
 import pygame
 import random
 import sys
+import math
 
 # Initialize pygame
 pygame.init()
@@ -19,6 +20,9 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 DARK_GREEN = (0, 128, 0)
+LIGHT_GREEN = (144, 238, 144)  # Light green background
+YELLOW = (255, 255, 0)  # Yellow for the sun
+ORANGE = (255, 165, 0)  # Orange for sun rays
 
 # Directions
 UP = (0, -1)
@@ -92,12 +96,35 @@ class Food:
         pygame.draw.rect(screen, RED, rect)
         pygame.draw.rect(screen, BLACK, rect, 1)
 
+class Sun:
+    def __init__(self):
+        self.center = (80, 80)  # Position in top-left area
+        self.radius = 40
+        self.ray_length = 20
+        
+    def draw(self, screen):
+        # Draw sun rays
+        num_rays = 8
+        for i in range(num_rays):
+            angle = (2 * math.pi / num_rays) * i
+            start_x = self.center[0] + math.cos(angle) * self.radius
+            start_y = self.center[1] + math.sin(angle) * self.radius
+            end_x = self.center[0] + math.cos(angle) * (self.radius + self.ray_length)
+            end_y = self.center[1] + math.sin(angle) * (self.radius + self.ray_length)
+            
+            pygame.draw.line(screen, ORANGE, (start_x, start_y), (end_x, end_y), 3)
+        
+        # Draw sun body
+        pygame.draw.circle(screen, YELLOW, self.center, self.radius)
+        pygame.draw.circle(screen, ORANGE, self.center, self.radius, 3)
+
 class SnakeGame:
     def __init__(self):
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("Snake Game")
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, 36)
+        self.sun = Sun()
         self.reset_game()
     
     def reset_game(self):
@@ -146,20 +173,24 @@ class SnakeGame:
                 self.game_over = True
     
     def draw(self):
-        self.screen.fill(BLACK)
+        # Fill background with light green
+        self.screen.fill(LIGHT_GREEN)
+        
+        # Draw the sun in the top-left corner
+        self.sun.draw(self.screen)
         
         if not self.game_over:
             self.snake.draw(self.screen)
             self.food.draw(self.screen)
         
-        # Draw score
-        score_text = self.font.render(f"Score: {self.score}", True, WHITE)
+        # Draw score (changed to black text for better visibility on green background)
+        score_text = self.font.render(f"Score: {self.score}", True, BLACK)
         self.screen.blit(score_text, (10, 10))
         
         # Draw game over screen
         if self.game_over:
-            game_over_text = self.font.render("GAME OVER", True, WHITE)
-            restart_text = self.font.render("Press R to restart or Q to quit", True, WHITE)
+            game_over_text = self.font.render("GAME OVER", True, BLACK)
+            restart_text = self.font.render("Press R to restart or Q to quit", True, BLACK)
             
             game_over_rect = game_over_text.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 50))
             restart_rect = restart_text.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 10))
@@ -169,13 +200,13 @@ class SnakeGame:
         
         # Draw pause screen
         if self.paused and not self.game_over:
-            pause_text = self.font.render("PAUSED - Press SPACE to continue", True, WHITE)
+            pause_text = self.font.render("PAUSED - Press SPACE to continue", True, BLACK)
             pause_rect = pause_text.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
             self.screen.blit(pause_text, pause_rect)
         
-        # Draw instructions
+        # Draw instructions (changed to black text)
         if not self.game_over and not self.paused:
-            instructions = self.font.render("Use arrow keys to move, SPACE to pause", True, WHITE)
+            instructions = self.font.render("Use arrow keys to move, SPACE to pause", True, BLACK)
             self.screen.blit(instructions, (10, WINDOW_HEIGHT - 30))
         
         pygame.display.flip()
