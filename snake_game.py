@@ -25,6 +25,7 @@ YELLOW = (255, 255, 0)  # Yellow for the sun
 BRIGHT_YELLOW = (255, 255, 100)  # Brighter yellow for sun center
 ORANGE = (255, 165, 0)  # Orange for sun rays
 GOLD = (255, 215, 0)  # Gold color for sun outline
+PINK = (255, 192, 203)  # Pink for the tongue
 
 # Directions
 UP = (0, -1)
@@ -37,6 +38,7 @@ class Snake:
         self.body = [(GRID_WIDTH // 2, GRID_HEIGHT // 2)]
         self.direction = RIGHT
         self.grow_next = False
+        self.tongue_frame = 0  # Animation frame for tongue flicking
     
     def move(self):
         head = self.body[0]
@@ -47,6 +49,9 @@ class Snake:
             self.body.pop()
         else:
             self.grow_next = False
+        
+        # Update tongue animation
+        self.tongue_frame = (self.tongue_frame + 1) % 20
     
     def grow(self):
         self.grow_next = True
@@ -70,6 +75,76 @@ class Snake:
         
         return False
     
+    def draw_tongue(self, screen, head_rect):
+        """Draw a forked tongue extending from the snake's head"""
+        # Only show tongue every few frames for flicking effect
+        if self.tongue_frame < 15:  # Tongue visible for 15 frames out of 20
+            head_center_x = head_rect.centerx
+            head_center_y = head_rect.centery
+            
+            # Calculate tongue base position (front of the head)
+            tongue_base_offset = GRID_SIZE // 3
+            if self.direction == RIGHT:
+                tongue_base_x = head_rect.right - 2
+                tongue_base_y = head_center_y
+            elif self.direction == LEFT:
+                tongue_base_x = head_rect.left + 2
+                tongue_base_y = head_center_y
+            elif self.direction == UP:
+                tongue_base_x = head_center_x
+                tongue_base_y = head_rect.top + 2
+            elif self.direction == DOWN:
+                tongue_base_x = head_center_x
+                tongue_base_y = head_rect.bottom - 2
+            
+            # Calculate tongue length (varies with animation for flicking effect)
+            base_length = GRID_SIZE // 2 + 5
+            tongue_length = base_length + (2 * math.sin(self.tongue_frame * 0.5))
+            
+            # Calculate main tongue end position
+            if self.direction == RIGHT:
+                tongue_end_x = tongue_base_x + tongue_length
+                tongue_end_y = tongue_base_y
+            elif self.direction == LEFT:
+                tongue_end_x = tongue_base_x - tongue_length
+                tongue_end_y = tongue_base_y
+            elif self.direction == UP:
+                tongue_end_x = tongue_base_x
+                tongue_end_y = tongue_base_y - tongue_length
+            elif self.direction == DOWN:
+                tongue_end_x = tongue_base_x
+                tongue_end_y = tongue_base_y + tongue_length
+            
+            # Draw main tongue line
+            pygame.draw.line(screen, PINK, 
+                           (tongue_base_x, tongue_base_y), 
+                           (tongue_end_x, tongue_end_y), 3)
+            
+            # Draw forked tips
+            fork_length = 6
+            fork_angle = 0.5  # Angle for fork spread
+            
+            if self.direction in [RIGHT, LEFT]:
+                # For horizontal movement
+                fork1_end_x = tongue_end_x
+                fork1_end_y = tongue_end_y - fork_length
+                fork2_end_x = tongue_end_x
+                fork2_end_y = tongue_end_y + fork_length
+            else:
+                # For vertical movement
+                fork1_end_x = tongue_end_x - fork_length
+                fork1_end_y = tongue_end_y
+                fork2_end_x = tongue_end_x + fork_length
+                fork2_end_y = tongue_end_y
+            
+            # Draw the two fork tips
+            pygame.draw.line(screen, PINK, 
+                           (tongue_end_x, tongue_end_y), 
+                           (fork1_end_x, fork1_end_y), 2)
+            pygame.draw.line(screen, PINK, 
+                           (tongue_end_x, tongue_end_y), 
+                           (fork2_end_x, fork2_end_y), 2)
+    
     def draw(self, screen):
         for i, segment in enumerate(self.body):
             color = DARK_GREEN if i == 0 else GREEN  # Head is darker
@@ -77,6 +152,10 @@ class Snake:
                              GRID_SIZE, GRID_SIZE)
             pygame.draw.rect(screen, color, rect)
             pygame.draw.rect(screen, BLACK, rect, 2)
+            
+            # Draw tongue on the head
+            if i == 0:
+                self.draw_tongue(screen, rect)
 
 class Food:
     def __init__(self):
@@ -139,7 +218,7 @@ class Sun:
 class SnakeGame:
     def __init__(self):
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        pygame.display.set_caption("Enhanced Snake Game - Green World")
+        pygame.display.set_caption("Enhanced Snake Game - Green World with Forked Tongue")
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, 36)
         self.sun = Sun()
@@ -273,7 +352,7 @@ class SnakeGame:
 
 # Run the game
 if __name__ == "__main__":
-    print("Welcome to Enhanced Snake Game - Green World Edition!")
+    print("Welcome to Enhanced Snake Game - Green World Edition with Forked Tongue!")
     print("Controls:")
     print("- Use arrow keys to move the snake")
     print("- Press SPACE to pause/unpause")
@@ -284,6 +363,7 @@ if __name__ == "__main__":
     print("- Vibrant green forest background")
     print("- Enhanced sun with rays and highlights in top-left corner")
     print("- Improved visual elements and text visibility")
+    print("- Animated forked tongue that flicks out from the snake's head!")
     print("\nStarting game...")
     
     game = SnakeGame()
