@@ -1,11 +1,10 @@
-# Snake Game
+# Flappy Bird Game
 
-This project is a classic Snake game built using the Next.js framework and React library. It provides a modern approach to a timeless game, where the player controls a snake to collect food, growing in size and increasing in speed with each piece collected.
+This project is a classic Flappy Bird game built using the Next.js framework and React library. It provides a modern take on the popular game where the player controls a bird, trying to navigate through obstacles without hitting them.
 
 ## Features
-- Responsive controls using the keyboard's arrow keys to navigate the snake.
-- Press SPACE to start or restart the game at any time.
-- Built using modern JavaScript tools for web development ensuring compatibility and performance.
+- Responsive controls using the keyboard's spacebar to flap the bird's wings and navigate through pipes.
+- Built using modern JavaScript tools for web development, ensuring compatibility and performance.
 
 ## Getting Started
 To run this game locally on your machine:
