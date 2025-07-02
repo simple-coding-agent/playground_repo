@@ -1,15 +1,23 @@
 {
-  "name": "nextjs-essential",
+  "name": "snake-game",
   "version": "1.0.0",
+  "description": "A classic Snake game built with Next.js and React",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
+  "keywords": ["snake", "game", "react", "nextjs", "javascript", "browser-game"],
   "dependencies": {
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
   }
 }
