@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from '../styles/SnakeGame.module.css';
-import GameBoard from './GameBoard';
-import GameInfo from './GameInfo';
+import GameBoard from '../components/GameBoard';
+import GameInfo from '../components/GameInfo';
 
 const GRID_SIZE = 20;
 const INITIAL_SNAKE = [{ x: 10, y: 10 }];
