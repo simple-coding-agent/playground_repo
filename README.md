@@ -1,38 +1,35 @@
-# Game Repository
+# Snake Game
 
 ## Overview
-This repository contains two classic games implemented in different programming languages:
+This project is a console-based Snake game developed in Python using the Pygame library.
 
-1. **Flappy Bird Game**
-   - Built with React and Next.js.
-   - Found in the `pages/FlappyBird.js` file.
-   - Styled using CSS modules found in `styles/FlappyBird.module.css`.
+## Game Details
+- **Description:** The classic Snake game where the player maneuvers a line, called the "snake", which grows in length, with the snake itself being a primary obstacle.
+- **Objective:** Control the snake to collect food appearing randomly on the screen. Each time the snake eats food, it grows longer. The game ends if the snake runs into the screen border or into itself.
 
-2. **Snake Game**
-   - Built with Python using the Pygame library.
-   - Implemented in the `snake_game.py` file.
+## How to Run
+1. Make sure Python and Pygame are installed on your machine.
+   - Install Pygame using pip:
+     ```bash
+     pip install pygame
+     ```
+2. Run the game using the command line:
+   ```bash
+   python snake_game.py
+   ```
 
-## Flappy Bird Game Details
-- **Description:** A web version of the classic Flappy Bird game, developed using React and Next.js to provide a modern, browser-based gaming experience.
-- **How to Run:**
-  - Navigate to the project directory.
-  - Run `npm install` to install dependencies.
-  - Start the development server using `npm run dev`.
-  - Open your browser and go to `http://localhost:3000` to play the game.
-
-## Snake Game Details
-- **Description:** A console version of the classic Snake game, developed with Python's Pygame library.
-- **How to Run:**
-  - Ensure Python and Pygame are installed on your system.
-  - Run the game using the command `python snake_game.py`.
+## Controls
+- **Arrow Keys:** Use the arrow keys (Up, Down, Left, Right) to control the movement of the snake.
+- **Pause:** Press `P` to pause the game.
+- **Restart/Close:** Follow the on-screen instructions to restart or quit when the game is over.
 
 ## Project Setup
-- **Dependencies:**
-  - Next.js, React, React-DOM for the Flappy Bird game.
-  - Python with Pygame for the Snake game.
+- **Dependencies:** Ensure you have Python installed along with the Pygame library.
+- **Run Environment:** This game runs in a terminal and will display a graphical window for the game.
 
 ## Contributing
-Feel free to fork the project and submit pull requests. For major changes, please open an issue first to discuss what you would like to change.
+- Fork the repository to start making your own contributions.
+- Develop your features/bug fixes and submit pull requests for feedback and potential integration.
 
 ## License
 This project is licensed under the MIT License.
