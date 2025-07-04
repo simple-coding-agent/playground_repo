@@ -1,0 +1,12 @@
+{
+  "name": "autonomous-coding-agent-backend",
+  "version": "1.0.0",
+  "description": "Backend for the autonomous coding agent using E2B SDK.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "e2b-sdk": "^1.0.0"  
+  }
+}

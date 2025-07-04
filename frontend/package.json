@@ -1,0 +1,15 @@
+{
+  "name": "autonomous-coding-agent-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for the autonomous coding agent using Next.js.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^12.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
