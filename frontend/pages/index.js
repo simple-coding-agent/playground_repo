@@ -1,83 +1,48 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 export default function Home() {
-  const [input, setInput] = useState('');
-  const [repoUrl, setRepoUrl] = useState('');
-  const [response, setResponse] = useState(null);
+  const [digit, setDigit] = useState('');
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [logs, setLogs] = useState([]);
-  const eventSourceRef = useRef(null);
 
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
-    setResponse(null);
-    setLogs([]);
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close();
-    }
-
-    // Start log streaming
-    const es = new window.EventSource('http://localhost:8000/agent/stream_logs');
-    eventSourceRef.current = es;
-    es.onmessage = (e) => {
-      setLogs(prev => [...prev, e.data]);
-    };
-    es.onerror = () => {
-      es.close();
-    };
+    setResult(null);
 
     try {
-      const res = await fetch('/api/agent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ instruction: input, repo_url: repoUrl })
-      });
+      const n = parseInt(digit, 10);
+      const res = await fetch(`http://localhost:8000/pi/${n}`);
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error from agent');
-      setResponse(data);
+      if (!res.ok) throw new Error(data.error || 'Error fetching Pi data');
+      setResult(data.digit);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
-      setTimeout(() => eventSourceRef.current && eventSourceRef.current.close(), 1000);
     }
   };
 
   return (
     <div style={{ maxWidth: 800, margin: '2em auto', fontFamily: 'monospace' }}>
-      <h1>Autonomous Coding Agent Interface</h1>
-      <label style={{ display: 'block', margin: '1em 0 0.5em' }}>Repository URL:</label>
+      <h1>Pi Digit Explorer</h1>
+      <label style={{ display: 'block', margin: '1em 0 0.5em' }}>Enter a digit position:</label>
       <input
-        type="text"
-        value={repoUrl}
-        onChange={e => setRepoUrl(e.target.value)}
-        placeholder="https://github.com/user/repo.git"
+        type="number"
+        value={digit}
+        onChange={e => setDigit(e.target.value)}
+        placeholder="e.g. 5"
         style={{ width: '100%' }}
       />
-      <label style={{ display: 'block', margin: '1em 0 0.5em' }}>Instruction:</label>
-      <textarea
-        value={input}
-        onChange={e => setInput(e.target.value)}
-        rows={5}
-        style={{ width: '100%' }}
-        placeholder="e.g. Add a test, create a README, etc..."
-      />
-      <button onClick={handleSubmit} disabled={loading || !input.trim() || !repoUrl.trim()} style={{ margin: '1em 0' }}>
-        {loading ? 'Submitting...' : 'Submit'}
+      <button onClick={handleSubmit} disabled={loading || !digit.trim()} style={{ margin: '1em 0' }}>
+        {loading ? 'Fetching...' : 'Get Digit'}
       </button>
       {error && <div style={{ color: 'red' }}>Error: {error}</div>}
-      <div>
-        <h3>Agent Log</h3>
-        <pre style={{ background: '#222', color: '#afe', padding: 16, minHeight: 160, maxHeight: 300, overflowY: 'scroll', borderRadius: 6 }}>
-          {logs.join('\n')}
-        </pre>
-      </div>
-      {response && (
+      {result !== null && (
         <div>
-          <h3>Agent Response</h3>
-          <pre>{JSON.stringify(response, null, 2)}</pre>
+          <h3>Result</h3>
+          <pre>{`The digit at position ${digit} is: ${result}`}</pre>
         </div>
       )}
     </div>

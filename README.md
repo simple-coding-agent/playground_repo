@@ -1,87 +1,68 @@
-# Autonomous Coding Agent Project
+# Pi Digit Explorer
 
-This project implements an autonomous coding agent using the [E2B Python SDK](https://e2b.dev) to autonomously perform repo tasks (clone, edit, shell, install, etc) on demand, and an interactive web interface (Next.js) for user prompting and live log viewing.
+This project enables users to explore the digits of π (Pi) through a simple modern web interface and a Python backend.
 
----
+## Features
 
-## Features / Requirements Implemented
-
-- **Agent can:**
-  - Clone any public git repository
-  - Plan tasks (demo: extend to tool/LLM based planning per assignment)
-  - Run arbitrary shell commands within the cloned repo
-  - Write/create files anywhere in the repo
-  - Install packages with pip or npm
-  - Support future LLM integrations (currently placeholder; assignment-ready)
-- **Frontend:**
-  - Next.js interactive web application
-  - User can enter an instruction **and** repo URL
-  - Logs from agent streamed in real time to UI (via SSE)
-  - Terminal-like display of all agent/tool output as it happens
-  - Final results and logs shown upon task completion
-- **Streaming:**
-  - Output/tool streaming from backend using Server Sent Events (SSE: `/agent/stream_logs`)
-- **Clear README** with full setup and usage
-
----
+- Frontend: A minimal React interface that allows users to input a position and get the corresponding digit of π.
+- Backend:
+  - A Python Flask API that provides an endpoint to fetch the Nth digit of π.
+  - A standalone Python script to compute and display the Nth digit of π in a console environment using a simple method.
 
 ## Project Structure
 
-- `backend/`: Python agent (Flask API) powered by E2B SDK
-    - `agent.py` (main Flask backend)
-- `frontend/`: Next.js web application
-    - `pages/` (includes UI and API bridge to backend)
-
----
+- `backend/`: Contains the Flask API and standalone script.
+    - `app.py`: Flask application providing `/pi/<n>` endpoint.
+    - `get_pi_digit.py`: Standalone script to compute the Nth digit of π.
+- `frontend/`: The React frontend application to interact with the backend.
 
 ## Setup Instructions
 
-### 1. Backend (Python, Flask, E2B SDK)
+### 1. Backend Setup
 
-```bash
-cd backend
-pip install flask e2b  # Ensure you have Python 3.8+
-# Optional: pip install any other requirements as needed
-python agent.py        # Agent runs at http://localhost:8000
-```
+Requirements:
+- Python 3.8+
 
-### 2. Frontend (Next.js)
+Steps:
+- Navigate to the backend directory:
+  ```bash
+  cd backend
+  ```
+- Install Flask:
+  ```bash
+  pip install flask
+  ```
+- Run the Flask application:
+  ```bash
+  python app.py
+  ```
+- To run the standalone script:
+  ```bash
+  python get_pi_digit.py <N>
+  ```
+  Replace `<N>` with the position of the digit you wish to see.
 
-```bash
-cd frontend
-npm install
-npm run dev     # Frontend runs at http://localhost:3000
-```
+### 2. Frontend Setup
 
-- Make sure both frontend and backend are running in separate terminals.
+Requirements:
+- Node.js and npm
 
-### 3. Usage
+Steps:
+- Navigate to the frontend directory:
+  ```bash
+  cd frontend
+  ```
+- Install dependencies:
+  ```bash
+  npm install
+  ```
+- Run the development server:
+  ```bash
+  npm run dev
+  ```
+- Open a browser and go to `http://localhost:3000` to start using the application.
 
-1. Visit `http://localhost:3000` in your browser.
-2. Paste a repo URL (e.g., `https://github.com/user/repo.git`) and your instruction (e.g., "Add a README.")
-3. Click **Submit**.
-4. Watch the live log streaming area for real-time outputs from tools and commands as the agent works.
+## Notes
 
----
-
-## API Endpoints
-
-### Backend
-
-- **`POST /agent/task`** &rarr; Starts assigned instruction on provided repo (`instruction`, `repo_url`)
-- **`GET /agent/stream_logs`** &rarr; Server Sent Events (SSE) stream of log lines as the agent runs tools/commands
-- **`GET /agent/logs`** &rarr; Returns the current logs buffer as JSON (entire log for that session)
-
-### Frontend
-
-- Uses `/pages/api/agent.js` to bridge requests to backend from Next.js API routes
-
----
-
-## Notes / Requirements
-- **Node.js, npm, Python 3.8+** required
-- **E2B SDK key**: If needed, set up your credentials for [E2B](https://e2b.dev)
-- Project can be extended for LLM and multi-provider support easily by editing the backend agent (see `agent.py`)
-- All code is well-documented and each major feature is aligned with the [AI Engineer] Coding Agent assignment requirements.
-
----
+- Ensure both the backend and frontend servers are running to properly view and interact with the application.
+- Currently, the π digits are hardcoded for demonstration purposes. You may replace this with a more accurate method to compute digits of π.
