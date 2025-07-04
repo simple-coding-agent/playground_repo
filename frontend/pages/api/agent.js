@@ -6,19 +6,18 @@ export default async function handler(req, res) {
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  const { instruction } = req.body;
-  if (!instruction) {
-    return res.status(400).json({ error: 'Missing instruction.' });
+  const { instruction, repo_url } = req.body;
+  if (!instruction || !repo_url) {
+    return res.status(400).json({ error: 'Missing instruction or repo_url.' });
   }
 
   try {
-    // Make a POST request to the backend agent
-    const response = await fetch('http://localhost:8000/', {
+    // Forward the POST request to the agent backend
+    const response = await fetch('http://localhost:8000/agent/task', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ instruction })
+      body: JSON.stringify({ instruction, repo_url })
     });
-
     const data = await response.json();
     return res.status(response.status).json(data);
   } catch (error) {
